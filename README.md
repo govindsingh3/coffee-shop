@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Coffee Shop Queue Optimization System - README
 
 ## 🚀 Overview
@@ -296,3 +297,6 @@ MIT License - Use freely for hackathon projects
 - Docker Multi-stage Builds: Container optimization
 
 **Built for HCL Tech Hackathon | 2026**
+=======
+# coffee-shop
+>>>>>>> 469cd9ad52080a63cdd5ddcc1abaaf90dcb5f9eb
