@@ -1,0 +1,40 @@
+﻿{
+    "menu":  {
+                 "cold-brew":  {
+                                   "name":  "Cold Brew",
+                                   "prepTime":  1,
+                                   "frequency":  0.25,
+                                   "price":  120
+                               },
+                 "espresso":  {
+                                  "name":  "Espresso",
+                                  "prepTime":  2,
+                                  "frequency":  0.2,
+                                  "price":  150
+                              },
+                 "americano":  {
+                                   "name":  "Americano",
+                                   "prepTime":  2,
+                                   "frequency":  0.15,
+                                   "price":  140
+                               },
+                 "cappuccino":  {
+                                    "name":  "Cappuccino",
+                                    "prepTime":  4,
+                                    "frequency":  0.2,
+                                    "price":  180
+                                },
+                 "latte":  {
+                               "name":  "Latte",
+                               "prepTime":  4,
+                               "frequency":  0.12,
+                               "price":  200
+                           },
+                 "mocha":  {
+                               "name":  "Specialty (Mocha)",
+                               "prepTime":  6,
+                               "frequency":  0.08,
+                               "price":  250
+                           }
+             }
+}

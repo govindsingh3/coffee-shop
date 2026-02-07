@@ -1,0 +1,54 @@
+name: Deploy to Azure
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+    
+    - name: Install dependencies
+      run: npm run install:all
+    
+    - name: Build project
+      run: npm run build
+    
+    - name: Login to Azure
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+    
+    - name: Build and push Docker image
+      uses: azure/docker-login@v1
+      with:
+        login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
+        username: ${{ secrets.REGISTRY_USERNAME }}
+        password: ${{ secrets.REGISTRY_PASSWORD }}
+    
+    - name: Build Docker image
+      run: |
+        docker build . -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/coffee-queue:${{ github.sha }}
+        docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/coffee-queue:${{ github.sha }}
+    
+    - name: Deploy to Azure Container Instances
+      run: |
+        az container create \
+          --resource-group ${{ secrets.RESOURCE_GROUP }} \
+          --name coffee-queue-system \
+          --image ${{ secrets.REGISTRY_LOGIN_SERVER }}/coffee-queue:${{ github.sha }} \
+          --registry-login-server ${{ secrets.REGISTRY_LOGIN_SERVER }} \
+          --registry-username ${{ secrets.REGISTRY_USERNAME }} \
+          --registry-password ${{ secrets.REGISTRY_PASSWORD }} \
+          --ports 3000 \
+          --environment-variables NODE_ENV=production PORT=3000
