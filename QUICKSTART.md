@@ -20,7 +20,10 @@ npm --version   # Should be 9+
 cd "d:\coffee shop"
 
 # Install everything
-npm run install:all
+cd backend && mvn clean install
+cd ..
+cd frontend && npm install
+cd ..
 ```
 
 **Expected output:**
@@ -173,8 +176,8 @@ taskkill /PID <PID> /F
 ```bash
 # Clear and retry
 rmdir node_modules /s /q
-rmdir client\node_modules /s /q
-npm run install:all
+rmdir frontend\node_modules /s /q
+cd frontend && npm install
 ```
 
 ### Frontend won't load?

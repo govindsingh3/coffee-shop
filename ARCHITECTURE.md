@@ -55,15 +55,19 @@ az acr build --registry <registry-name> --image coffee-queue:latest .
 
 ```
 coffee-shop/
-├── server/                    # Backend Express server
-│   └── index.ts              # Main server with queue algorithm
-├── client/                    # React frontend
+├── backend/                   # Java Spring Boot backend
+│   ├── pom.xml
 │   ├── src/
-│   │   ├── components/
-│   │   │   ├── Menu.tsx       # Order placement UI
-│   │   │   ├── QueueDashboard.tsx  # Live queue visualization
-│   │   │   └── Navbar.tsx     # Navigation
-│   │   ├── App.tsx            # Main app component
+│   └── README.md
+├── frontend/                  # React frontend
+│   ├── package.json
+│   ├── tsconfig.json
+│   ├── vite.config.ts
+│   ├── tailwind.config.js
+│   ├── postcss.config.cjs
+│   ├── index.html
+│   └── src/
+│       ├── App.tsx            # Main app component
 │   │   └── main.tsx           # Entry point
 │   └── index.html             # HTML template
 ├── .github/workflows/         # CI/CD pipeline

@@ -79,13 +79,13 @@ coffee-shop/
 │           └─ Error handling & validation
 │
 ├── 🎨 Frontend (React + TypeScript)
-│   └── client/
+│   └── frontend/
 │       ├── index.html         ← HTML template
-│       ├── package.json       ← Client dependencies
+│       ├── package.json       ← Frontend dependencies
 │       ├── tsconfig.json      ← TypeScript config
 │       ├── vite.config.ts     ← Vite configuration
 │       ├── tailwind.config.js ← Tailwind setup
-│       ├── postcss.config.js  ← PostCSS setup
+│       ├── postcss.config.cjs ← PostCSS setup
 │       └── src/
 │           ├── main.tsx       ← Entry point
 │           ├── App.tsx        ← Main app component
@@ -97,9 +97,8 @@ coffee-shop/
 │               └── QueueDashboard.tsx ← Live dashboard
 │
 ├── 🐳 Docker & Compose
-│   ├── Dockerfile             ← Multi-stage build
 │   ├── docker-compose.yml     ← Local dev environment
-│   └── client/Dockerfile      ← Frontend build
+│   └── frontend/Dockerfile    ← Frontend build
 │
 ├── 🚀 CI/CD Pipeline
 │   └── .github/workflows/

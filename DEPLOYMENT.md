@@ -323,8 +323,8 @@ kill -9 <PID>
 ### Issue: Module not found
 ```bash
 # Clear node_modules and reinstall
-rm -rf node_modules client/node_modules
-npm run install:all
+rm -rf node_modules frontend/node_modules
+npm install --prefix frontend
 ```
 
 ### Issue: Docker build fails

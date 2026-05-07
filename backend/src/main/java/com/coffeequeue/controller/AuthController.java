@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,17 +29,28 @@ public class AuthController {
     public ResponseEntity<?> authenticateUser(@RequestBody Map<String, String> loginRequest) {
         try {
             log.info("Login attempt for user: {}", loginRequest.get("username"));
-            
+
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(loginRequest.get("username"), loginRequest.get("password")));
 
             SecurityContextHolder.getContext().setAuthentication(authentication);
             String jwt = jwtUtils.generateJwtToken(authentication);
-            
-            log.info("Login successful for user: {}", authentication.getName());
-            return ResponseEntity.ok(Map.of("token", jwt, "username", authentication.getName()));
+
+            // Extract the user's role
+            String role = authentication.getAuthorities().stream()
+                    .map(GrantedAuthority::getAuthority)
+                    .findFirst()
+                    .orElse("ROLE_USER")
+                    .replace("ROLE_", "");
+
+            log.info("Login successful for user: {} with role: {}", authentication.getName(), role);
+            return ResponseEntity.ok(Map.of(
+                "token", jwt, 
+                "username", authentication.getName(),
+                "role", role
+            ));
         } catch (Exception e) {
-            log.error("Login failed for user: {} - Error: {}", loginRequest.get("username"), e.getMessage(), e);
+            log.error("Login failed for user: {} - Error: {}", loginRequest.get("username"), e.getMessage());
             return ResponseEntity.status(401).body(Map.of("error", "Invalid credentials", "message", e.getMessage()));
         }
     }

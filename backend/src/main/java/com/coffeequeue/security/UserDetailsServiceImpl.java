@@ -15,18 +15,25 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     private final Map<String, UserDetails> users = new HashMap<>();
 
     public UserDetailsServiceImpl() {
-        // Hardcoded users for MVP
+        // ═══════════════════════════════════════════
+        // ADMIN — Full access: Dashboard, Analytics, QR, Menu, Queue
+        // ═══════════════════════════════════════════
+        users.put("admin", User.withUsername("admin")
+                .password("{noop}admin123")
+                .roles("ADMIN")
+                .build());
+
+        // ═══════════════════════════════════════════
+        // BARISTAS — Queue access only: View/Complete orders, Print bills
+        // ═══════════════════════════════════════════
         users.put("barista", User.withUsername("barista")
                 .password("{noop}password")
                 .roles("BARISTA")
                 .build());
-        users.put("customer", User.withUsername("customer")
+
+        users.put("barista2", User.withUsername("barista2")
                 .password("{noop}password")
-                .roles("USER")
-                .build());
-        users.put("vip", User.withUsername("vip")
-                .password("{noop}password")
-                .roles("VIP")
+                .roles("BARISTA")
                 .build());
     }
 

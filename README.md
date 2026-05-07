@@ -62,14 +62,14 @@ cd "d:\coffee shop"
 mvn clean install
 
 # 3. Install frontend dependencies
-cd client && npm install && cd ..
+cd frontend && npm install && cd ..
 
 # 4. Start development servers
 # Terminal 1: Start Java backend
-mvn spring-boot:run
+cd backend && mvn spring-boot:run
 
 # Terminal 2: Start React frontend
-cd client && npm run dev
+cd frontend && npm run dev
 ```
 
 This will start:
@@ -218,26 +218,23 @@ VITE_API_URL=http://localhost:3000
 
 ```
 coffee-shop/
-├── server/
-│   └── index.ts              # Main backend server
-├── client/
+├── backend/                  # Java Spring Boot backend
+│   ├── pom.xml
 │   ├── src/
-│   │   ├── components/
-│   │   │   ├── Menu.tsx       # Order placement
-│   │   │   ├── QueueDashboard.tsx # Queue visualization
-│   │   │   └── Navbar.tsx     # Navigation
-│   │   ├── App.tsx            # Main app component
-│   │   ├── index.css          # Global styles
-│   │   └── main.tsx           # React entry point
-│   ├── index.html             # HTML template
-│   ├── vite.config.ts         # Vite configuration
-│   ├── tailwind.config.js     # Tailwind configuration
-│   └── package.json           # Frontend dependencies
-├── Dockerfile                 # Multi-stage Docker build
-├── docker-compose.yml         # Docker Compose setup
-├── package.json               # Root dependencies
-├── tsconfig.json              # TypeScript config
-└── README.md                  # This file
+│   └── README.md
+├── frontend/                 # React + TypeScript frontend
+│   ├── package.json
+│   ├── tsconfig.json
+│   ├── vite.config.ts
+│   ├── tailwind.config.js
+│   ├── postcss.config.cjs
+│   ├── Dockerfile
+│   ├── index.html
+│   └── src/
+├── docker-compose.yml        # Local dev environment
+├── PROJECT_STRUCTURE.md
+├── README.md                 # This file
+└── DEPLOYMENT.md             # Setup guide
 ```
 
 ---

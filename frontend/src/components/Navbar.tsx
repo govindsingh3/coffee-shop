@@ -10,8 +10,13 @@ interface NavbarProps {
 }
 
 const Navbar: React.FC<NavbarProps> = ({ currentView, setCurrentView }) => {
-  const { user, logout } = useAuth();
+  const { user, logout, isAdmin, isBarista } = useAuth();
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+
+  const handleLogout = () => {
+    logout();
+    setCurrentView('menu');
+  };
 
   return (
     <>
@@ -35,8 +40,9 @@ const Navbar: React.FC<NavbarProps> = ({ currentView, setCurrentView }) => {
         <motion.div 
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
-          className="flex space-x-2 bg-amber-50/50 p-1.5 rounded-2xl border border-amber-100"
+          className="flex items-center space-x-2 bg-amber-50/50 p-1.5 rounded-2xl border border-amber-100"
         >
+          {/* Order Menu — always visible */}
           <button
             onClick={() => setCurrentView('menu')}
             className={`flex items-center gap-2 px-5 py-2.5 rounded-xl transition-all duration-300 font-bold text-sm ${
@@ -49,25 +55,29 @@ const Navbar: React.FC<NavbarProps> = ({ currentView, setCurrentView }) => {
             Order Menu
           </button>
           
-          <button
-            onClick={() => setCurrentView('dashboard')}
-            className={`flex items-center gap-2 px-5 py-2.5 rounded-xl transition-all duration-300 font-bold text-sm ${
-              currentView === 'dashboard'
-                ? 'bg-white text-amber-700 shadow-md shadow-amber-900/5'
-                : 'text-amber-700/60 hover:text-amber-700 hover:bg-white/50'
-            }`}
-          >
-            <LayoutDashboard size={18} />
-            Live Queue
-          </button>
-
+          {/* Live Queue — visible for barista + admin */}
           {user && (
+            <button
+              onClick={() => setCurrentView('dashboard')}
+              className={`flex items-center gap-2 px-5 py-2.5 rounded-xl transition-all duration-300 font-bold text-sm ${
+                currentView === 'dashboard'
+                  ? 'bg-white text-amber-700 shadow-md shadow-amber-900/5'
+                  : 'text-amber-700/60 hover:text-amber-700 hover:bg-white/50'
+              }`}
+            >
+              <LayoutDashboard size={18} />
+              Live Queue
+            </button>
+          )}
+
+          {/* Admin — visible only for admin */}
+          {isAdmin && (
             <button
               onClick={() => setCurrentView('admin')}
               className={`flex items-center gap-2 px-5 py-2.5 rounded-xl transition-all duration-300 font-bold text-sm ${
                 currentView === 'admin'
-                  ? 'bg-white text-amber-700 shadow-md shadow-amber-900/5'
-                  : 'text-amber-700/60 hover:text-amber-700 hover:bg-white/50'
+                  ? 'bg-white text-purple-700 shadow-md shadow-purple-900/5'
+                  : 'text-purple-600/60 hover:text-purple-700 hover:bg-purple-50/50'
               }`}
             >
               <Shield size={18} />
@@ -75,14 +85,23 @@ const Navbar: React.FC<NavbarProps> = ({ currentView, setCurrentView }) => {
             </button>
           )}
           
+          {/* User section */}
           {user ? (
-            <button
-              onClick={logout}
-              className="flex items-center gap-2 px-5 py-2.5 rounded-xl transition-all duration-300 font-bold text-sm text-red-600 hover:bg-red-50"
-            >
-              <LogOut size={18} />
-              Logout ({user.username})
-            </button>
+            <div className="flex items-center gap-2">
+              {/* Role badge */}
+              <span className={`px-3 py-1.5 rounded-lg text-xs font-bold ${
+                isAdmin ? 'bg-purple-100 text-purple-700' : 'bg-amber-100 text-amber-700'
+              }`}>
+                {isAdmin ? '👑 Admin' : '☕ Barista'}
+              </span>
+              <button
+                onClick={handleLogout}
+                className="flex items-center gap-2 px-4 py-2.5 rounded-xl transition-all duration-300 font-bold text-sm text-red-600 hover:bg-red-50"
+              >
+                <LogOut size={18} />
+                Logout
+              </button>
+            </div>
           ) : (
             <button
               onClick={() => setIsLoginModalOpen(true)}

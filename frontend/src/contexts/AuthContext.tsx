@@ -1,16 +1,24 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import { api } from '../services/api';
 
+interface UserData {
+  username: string;
+  token: string;
+  role: 'ADMIN' | 'BARISTA';
+}
+
 interface AuthContextType {
-  user: { username: string; token: string } | null;
-  login: (username: string, token: string) => void;
+  user: UserData | null;
+  login: (username: string, token: string, role: string) => void;
   logout: () => void;
+  isAdmin: boolean;
+  isBarista: boolean;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [user, setUser] = useState<{ username: string; token: string } | null>(null);
+  const [user, setUser] = useState<UserData | null>(null);
 
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
@@ -21,8 +29,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   }, []);
 
-  const login = (username: string, token: string) => {
-    const userObj = { username, token };
+  const login = (username: string, token: string, role: string) => {
+    const userObj: UserData = { username, token, role: role as 'ADMIN' | 'BARISTA' };
     setUser(userObj);
     localStorage.setItem('user', JSON.stringify(userObj));
     api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
@@ -34,8 +42,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     delete api.defaults.headers.common['Authorization'];
   };
 
+  const isAdmin = user?.role === 'ADMIN';
+  const isBarista = user?.role === 'BARISTA';
+
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, login, logout, isAdmin, isBarista }}>
       {children}
     </AuthContext.Provider>
   );
