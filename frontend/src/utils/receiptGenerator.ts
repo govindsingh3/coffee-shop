@@ -27,7 +27,6 @@ export const generateReceipt = (data: ReceiptData): jsPDF => {
 
   const pageWidth = 80;
   const margin = 5;
-  const contentWidth = pageWidth - margin * 2;
   let y = 10;
 
   // Helper functions

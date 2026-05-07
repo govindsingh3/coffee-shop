@@ -14,7 +14,7 @@ interface CartItem {
 interface CheckoutModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSuccess: (phone: string) => void;
+  onSuccess: () => void;
   totalAmount: number;
   cartItems: CartItem[];
   customerType: string;
@@ -89,7 +89,7 @@ const CheckoutModal: React.FC<CheckoutModalProps> = ({ isOpen, onClose, onSucces
   };
 
   const handleDone = () => {
-    onSuccess(phone);
+    onSuccess();
     onClose();
     setStep('details');
     setPhone('');
@@ -200,9 +200,10 @@ const CheckoutModal: React.FC<CheckoutModalProps> = ({ isOpen, onClose, onSucces
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                     type="submit"
-                    className="w-full py-4 mt-4 bg-gray-900 text-white rounded-xl font-bold text-lg hover:bg-black transition-all flex items-center justify-center gap-2"
+                    disabled={loading}
+                    className="w-full py-4 mt-4 bg-gray-900 text-white rounded-xl font-bold text-lg hover:bg-black transition-all flex items-center justify-center gap-2 disabled:cursor-not-allowed disabled:opacity-70"
                   >
-                    Pay ₹{grandTotal.toFixed(2)}
+                    {loading ? 'Processing...' : `Pay ₹${grandTotal.toFixed(2)}`}
                   </motion.button>
                 </form>
               </>

@@ -8,9 +8,7 @@ services:
     environment:
       - SPRING_PROFILES_ACTIVE=dev
       - SERVER_PORT=3000
-      - SPRING_DATA_MONGODB_URI=mongodb://admin:password@mongodb:27017/coffee-shop?authSource=admin
-    depends_on:
-      - mongodb
+      - SPRING_DATA_MONGODB_URI=mongodb+srv://govinddb:govind@123@cluster0.ngh7mbh.mongodb.net/
     networks:
       - coffee-network
     healthcheck:
@@ -19,23 +17,6 @@ services:
       timeout: 10s
       retries: 3
       start_period: 40s
-
-  mongodb:
-    image: mongo:7.0
-    ports:
-      - "27017:27017"
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: admin
-      MONGO_INITDB_ROOT_PASSWORD: password
-    volumes:
-      - mongodb_data:/data/db
-    networks:
-      - coffee-network
-    healthcheck:
-      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet
-      interval: 10s
-      timeout: 5s
-      retries: 5
 
   frontend:
     build:

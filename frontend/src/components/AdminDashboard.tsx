@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { 
-  BarChart3, DollarSign, ShoppingBag, TrendingUp, Clock, 
+  BarChart3, DollarSign, ShoppingBag, TrendingUp, 
   Users, Coffee, Package, ArrowUpRight, ArrowDownRight,
   Search, Filter, ChevronDown, Printer, QrCode
 } from 'lucide-react';
-import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts';
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { api } from '../services/api';
 import { useAuth } from '../contexts/AuthContext';
 import { printReceipt } from '../utils/receiptGenerator';
@@ -74,9 +74,6 @@ const AdminDashboard: React.FC = () => {
   const generateQRCodes = async () => {
     const codes: { [key: number]: string } = {};
     // Use network-accessible URL instead of localhost
-    const origin = window.location.origin.replace('localhost', window.location.hostname === 'localhost' 
-      ? window.location.hostname : window.location.hostname);
-    // Get the real network origin — if accessed from network IP it works; if from localhost, detect it
     const baseUrl = window.location.origin;
     const networkUrl = baseUrl.includes('localhost') 
       ? baseUrl.replace('localhost', getNetworkIP()) 
@@ -240,7 +237,7 @@ const AdminDashboard: React.FC = () => {
                     <YAxis tick={{ fontSize: 12 }} stroke="#9ca3af" />
                     <Tooltip 
                       contentStyle={{ borderRadius: '12px', border: '1px solid #fcd34d', background: '#fffbeb' }}
-                      formatter={(value: number) => [`₹${value}`, 'Revenue']}
+                      formatter={(value: any) => [`₹${value ?? 0}`, 'Revenue']}
                     />
                     <Area type="monotone" dataKey="revenue" stroke="#f59e0b" strokeWidth={3} fill="url(#colorRevenue)" />
                   </AreaChart>

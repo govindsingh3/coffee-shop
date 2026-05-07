@@ -15,15 +15,8 @@ interface Order {
   regular: boolean;
 }
 
-interface QueueStats {
-  totalOrders: number;
-  avgWaitTime: number;
-  timeoutRate: number;
-}
-
 const QueueDashboard: React.FC = () => {
   const [orders, setOrders] = useState<Order[]>([]);
-  const [stats, setStats] = useState<QueueStats | null>(null);
   const [loading, setLoading] = useState(true);
   const [countdown, setCountdown] = useState<{ [key: string]: number }>({});
   const [calculatedStats, setCalculatedStats] = useState({
@@ -84,7 +77,6 @@ const QueueDashboard: React.FC = () => {
     try {
       const response = await api.get('/queue');
       setOrders(response.data.waitingOrders || []);
-      setStats(response.data.stats || {});
     } catch (error) {
       console.error('Failed to fetch queue:', error);
     } finally {

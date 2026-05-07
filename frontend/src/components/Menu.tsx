@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { api } from '../services/api';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Plus, Minus, ShoppingCart, Star, Coffee, Sparkles } from 'lucide-react';
 import toast from 'react-hot-toast';
@@ -16,7 +15,6 @@ interface MenuItem {
 const Menu: React.FC = () => {
   const [cart, setCart] = useState<{ [key: string]: number }>({});
   const [customerType, setCustomerType] = useState<'Regular' | 'VIP Premium'>('Regular');
-  const [loading, setLoading] = useState(false);
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
 
   const defaultMenu: MenuItem[] = [
@@ -45,7 +43,7 @@ const Menu: React.FC = () => {
     setIsCheckoutOpen(true);
   };
 
-  const handlePlaceOrder = async (phone: string) => {
+  const handlePlaceOrder = async () => {
     // Order is already placed inside CheckoutModal after payment
     setCart({});
     setCustomerType('Regular');
@@ -213,20 +211,14 @@ const Menu: React.FC = () => {
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               onClick={handleCheckoutClick}
-              disabled={loading || totalItems === 0}
+              disabled={totalItems === 0}
               className={`w-full py-4 rounded-2xl font-bold text-lg flex items-center justify-center gap-3 transition-all ${
                 totalItems > 0
                   ? 'bg-gradient-to-r from-amber-500 to-orange-600 text-white shadow-xl shadow-amber-500/30 hover:shadow-2xl hover:shadow-amber-500/40'
                   : 'bg-gray-100 text-gray-400 cursor-not-allowed'
               }`}
             >
-              {loading ? (
-                <motion.div animate={{ rotate: 360 }} transition={{ repeat: Infinity, ease: "linear", duration: 1 }}>
-                  <Coffee />
-                </motion.div>
-              ) : (
-                <>Place Order <ShoppingCart size={20} /></>
-              )}
+              <>Place Order <ShoppingCart size={20} /></>
             </motion.button>
           </div>
         </div>
