@@ -8,6 +8,6 @@ RUN mvn clean package -DskipTests
 # Runtime image
 FROM eclipse-temurin:17-jre-alpine
 WORKDIR /app
-COPY --from=builder /app/target/coffee-shop-queue-1.0.0.jar app.jar
+COPY --from=builder /app/target/*.jar app.jar
 EXPOSE 3000
 ENTRYPOINT ["java", "-jar", "app.jar"]
