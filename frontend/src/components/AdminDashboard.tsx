@@ -73,8 +73,17 @@ const AdminDashboard: React.FC = () => {
 
   const generateQRCodes = async () => {
     const codes: { [key: number]: string } = {};
+    // Use network-accessible URL instead of localhost
+    const origin = window.location.origin.replace('localhost', window.location.hostname === 'localhost' 
+      ? window.location.hostname : window.location.hostname);
+    // Get the real network origin — if accessed from network IP it works; if from localhost, detect it
+    const baseUrl = window.location.origin;
+    const networkUrl = baseUrl.includes('localhost') 
+      ? baseUrl.replace('localhost', getNetworkIP()) 
+      : baseUrl;
+    
     for (let i = 1; i <= tableCount; i++) {
-      const url = `${window.location.origin}/?table=${i}`;
+      const url = `${networkUrl}/?table=${i}`;
       codes[i] = await QRCode.toDataURL(url, {
         width: 256,
         margin: 2,
@@ -83,6 +92,18 @@ const AdminDashboard: React.FC = () => {
     }
     setQrCodes(codes);
     toast.success(`Generated QR codes for ${tableCount} tables!`);
+  };
+
+  // Helper to get network IP — falls back to displaying a prompt
+  const getNetworkIP = (): string => {
+    const stored = sessionStorage.getItem('networkIP');
+    if (stored) return stored;
+    const ip = prompt('Enter your computer\'s local IP address (e.g., 192.168.1.5).\nYour phone must be on the same WiFi to scan QR codes.\n\nFind it via: Settings > WiFi > IP Address, or run "ipconfig" in terminal.', '192.168.1.1');
+    if (ip) {
+      sessionStorage.setItem('networkIP', ip);
+      return ip;
+    }
+    return 'localhost';
   };
 
   const printAllQR = () => {
