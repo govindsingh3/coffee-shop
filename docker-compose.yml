@@ -8,7 +8,8 @@ services:
     environment:
       - SPRING_PROFILES_ACTIVE=dev
       - SERVER_PORT=3000
-      - SPRING_DATA_MONGODB_URI=mongodb+srv://govinddb:govind%40123@cluster0.ngh7mbh.mongodb.net/
+      - SPRING_DATA_MONGODB_URI=mongodb+srv://govinddb:govind123@cluster0.ngh7mbh.mongodb.net/
+      - MONGO_URI=mongodb+srv://govinddb:govind123@cluster0.ngh7mbh.mongodb.net/
     networks:
       - coffee-network
     healthcheck:
