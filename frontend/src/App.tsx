@@ -1,23 +1,41 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './App.css';
 import Menu from './components/Menu';
 import QueueDashboard from './components/QueueDashboard';
+import AdminDashboard from './components/AdminDashboard';
 import Navbar from './components/Navbar';
 import { Toaster } from 'react-hot-toast';
 import { useAuth } from './contexts/AuthContext';
 
 function App() {
-  const [currentView, setCurrentView] = useState<'menu' | 'dashboard'>('menu');
+  const [currentView, setCurrentView] = useState<'menu' | 'dashboard' | 'admin'>('menu');
+
+  // Check for table parameter in URL (QR code ordering)
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const table = params.get('table');
+    if (table) {
+      // Store table number for order tagging
+      sessionStorage.setItem('tableNumber', table);
+    }
+  }, []);
 
   return (
     <div className="min-h-screen">
       <Toaster position="top-right" toastOptions={{ duration: 4000 }} />
       <Navbar currentView={currentView} setCurrentView={setCurrentView} />
+      
+      {/* Table indicator banner */}
+      {sessionStorage.getItem('tableNumber') && currentView === 'menu' && (
+        <div className="bg-gradient-to-r from-amber-500 to-orange-500 text-white text-center py-2 px-4 text-sm font-bold">
+          📍 Ordering from Table {sessionStorage.getItem('tableNumber')} — Your order will be delivered to your table!
+        </div>
+      )}
+      
       <main className="w-full pt-8">
         {currentView === 'menu' && <Menu />}
-        {currentView === 'dashboard' && (
-          <ProtectedDashboard />
-        )}
+        {currentView === 'dashboard' && <ProtectedDashboard />}
+        {currentView === 'admin' && <AdminDashboard />}
       </main>
     </div>
   );

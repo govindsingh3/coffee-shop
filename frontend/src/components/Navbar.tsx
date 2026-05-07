@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Coffee, Menu as MenuIcon, LayoutDashboard, User, LogOut } from 'lucide-react';
+import { Coffee, Menu as MenuIcon, LayoutDashboard, User, LogOut, Shield } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import LoginModal from './LoginModal';
 
 interface NavbarProps {
-  currentView: 'menu' | 'dashboard';
-  setCurrentView: (view: 'menu' | 'dashboard') => void;
+  currentView: 'menu' | 'dashboard' | 'admin';
+  setCurrentView: (view: 'menu' | 'dashboard' | 'admin') => void;
 }
 
 const Navbar: React.FC<NavbarProps> = ({ currentView, setCurrentView }) => {
@@ -60,6 +60,20 @@ const Navbar: React.FC<NavbarProps> = ({ currentView, setCurrentView }) => {
             <LayoutDashboard size={18} />
             Live Queue
           </button>
+
+          {user && (
+            <button
+              onClick={() => setCurrentView('admin')}
+              className={`flex items-center gap-2 px-5 py-2.5 rounded-xl transition-all duration-300 font-bold text-sm ${
+                currentView === 'admin'
+                  ? 'bg-white text-amber-700 shadow-md shadow-amber-900/5'
+                  : 'text-amber-700/60 hover:text-amber-700 hover:bg-white/50'
+              }`}
+            >
+              <Shield size={18} />
+              Admin
+            </button>
+          )}
           
           {user ? (
             <button

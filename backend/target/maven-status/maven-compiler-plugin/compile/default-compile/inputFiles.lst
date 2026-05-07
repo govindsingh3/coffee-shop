@@ -1,5 +1,6 @@
 D:\coffee shop\backend\src\main\java\com\coffeequeue\controller\PaymentController.java
 D:\coffee shop\backend\src\main\java\com\coffeequeue\exception\OrderNotFoundException.java
+D:\coffee shop\backend\src\main\java\com\coffeequeue\controller\AdminController.java
 D:\coffee shop\backend\src\main\java\com\coffeequeue\service\MenuService.java
 D:\coffee shop\backend\src\main\java\com\coffeequeue\controller\AuthController.java
 D:\coffee shop\backend\src\main\java\com\coffeequeue\exception\NoAvailableBaristaException.java
